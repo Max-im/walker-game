@@ -1,20 +1,23 @@
+import { Player } from './Player';
+
 export class Game {
     canvas = <HTMLCanvasElement>document.getElementById('canvas');
     ctx = <CanvasRenderingContext2D> this.canvas.getContext('2d');
-    width = 1024;
-    height = 567;
+    player = new Player(this);
 
     constructor() {
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
     }
 
-    update(deltaTime: number) {
-        console.log(deltaTime, 'update');
+    update() {
+        this.ctx.fillStyle = '#4d79bc';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.player.update();
     }
 
     draw() {
-        console.log('draw');
+        this.player.draw();
     }
 
     private checkCollistions(rect1: any, rect2: any): boolean {
