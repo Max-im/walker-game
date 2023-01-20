@@ -7,7 +7,7 @@ export class Game {
     ctx = <CanvasRenderingContext2D> this.canvas.getContext('2d');
     player = new Player(this);
     control = new Control();
-    platforms: Platform[] = [new Platform(this)];
+    platforms: Platform[] = [new Platform(this, { x: 200, y: 300 }), new Platform(this, { x: 300, y: 200 })];
     speed = 15;
 
     constructor() {
