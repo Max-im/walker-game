@@ -1,31 +1,32 @@
 import { Player } from './Player';
 
 export class Control {
-    player: Player;
-    keys: string[] = [];
+    keys: {[action: string]: {key: string, pressed: boolean}} = {
+        right: { key: 'd', pressed: false },
+        left: { key: 'a', pressed: false },
+        up: { key: 'w',  pressed: false }
+    };
 
-    private controlKeys = ['ArrowRight', 'ArrowLeft', 'ArrowUp'];
 
-    constructor(player: Player) {
-        this.player = player;
+    constructor() {
         this.addDesktopControl();
     }
 
     addDesktopControl() {
         window.addEventListener('keydown', (e: KeyboardEvent) => {
-            if (!this.controlKeys.includes(e.key)) return;
-
-            if (e.key === 'ArrowRight') this.player.walkRight();
-            if (e.key === 'ArrowLeft') this.player.walkLeft();
-            if (e.key === 'ArrowUp') this.player.jump();
+            for (const action in this.keys) {
+                if (e.key === this.keys[action].key) {
+                    this.keys[action].pressed = true;
+                }
+            }
         });
 
         window.addEventListener('keyup', (e: KeyboardEvent) => {
-            if (!this.controlKeys.includes(e.key)) return;
-
-            if (e.key === 'ArrowRight') this.player.stop('right');
-            if (e.key === 'ArrowLeft') this.player.stop('left');
-            if (e.key === 'ArrowUp') this.player.stop('left');
+            for (const action in this.keys) {
+                if (e.key === this.keys[action].key) {
+                    this.keys[action].pressed = false;
+                }
+            }
         });
     }
 }

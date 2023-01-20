@@ -1,4 +1,3 @@
-import { Control } from './Control';
 import { Game } from './Game';
 import { Sprite } from './Sprite';
 
@@ -13,9 +12,8 @@ export class Player extends Sprite {
     frameY = 0;
     speedX = 0;
     speedY = 0;
-    gravity = 0.1;
+    gravity = 0.8;
     maxFrame = 0;
-    control = new Control(this);
 
     constructor(game: Game) {
         super();
@@ -27,47 +25,44 @@ export class Player extends Sprite {
         this.updateSprite();
         this.x += this.speedX;
         this.y += this.speedY;
-
-        if (this.y + this.height  <= this.game.canvas.height) {
-            this.speedY += this.gravity;
-        } else {
-            this.speedY = 0;
-        }
+        this.onGravity();
     }
 
-    turnRight() {
+    private onGravity() {
+        if (this.y + this.height + this.speedY <= this.game.canvas.height) this.speedY += this.gravity;
+        else this.speedY = 0;
+    }
+
+    private turnRight() {
         this.maxFrame = 59;
         this.width = 177;
         this.image = <HTMLImageElement>document.getElementById('idleRight');
     }
 
-    turnLeft() {
+    private turnLeft() {
         this.maxFrame = 59;
         this.width = 177;
         this.image = <HTMLImageElement>document.getElementById('idleLeft');
     }
 
-    walkRight() {
+    setWalkRightSkin() {
         this.width = 341;
         this.maxFrame = 29;
         this.image = <HTMLImageElement>document.getElementById('walkRight');
-        this.speedX = 15;
     }
 
-    walkLeft() {
+    setWalkLeftSkin() {
         this.width = 341;
         this.maxFrame = 29;
         this.image = <HTMLImageElement>document.getElementById('walkLeft');
-        this.speedX = -15;
     }
 
-    stop(direction: 'right' | 'left') {
-        if (direction === 'right') this.turnRight();
-        else if (direction === 'left') this.turnLeft();
+    stop() {
+        this.turnRight();
         this.speedX = 0;
     }
 
     jump() {
-        // this.speedY -= 30;
+        this.speedY -= 5;
     }
 }
