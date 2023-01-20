@@ -13,7 +13,7 @@ export class Player extends Sprite {
     frameY = 0;
     speedX = 0;
     speedY = 0;
-    gravity = 0;
+    gravity = 0.1;
     maxFrame = 0;
     control = new Control(this);
 
@@ -25,9 +25,14 @@ export class Player extends Sprite {
 
     update() {
         this.updateSprite();
-        this.speedY += this.gravity;
         this.x += this.speedX;
         this.y += this.speedY;
+
+        if (this.y + this.height  <= this.game.canvas.height) {
+            this.speedY += this.gravity;
+        } else {
+            this.speedY = 0;
+        }
     }
 
     turnRight() {
