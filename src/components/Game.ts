@@ -1,29 +1,35 @@
+import { Background } from './Background';
 import { Control } from './Control';
 import { Platform } from './Platform';
 import { Player } from './Player';
 
+const platformImg = <HTMLImageElement>document.getElementById('platform');
 export class Game {
     canvas = <HTMLCanvasElement>document.getElementById('canvas');
     ctx = <CanvasRenderingContext2D> this.canvas.getContext('2d');
     player = new Player(this);
     control = new Control();
-    platforms: Platform[] = [new Platform(this, { x: 200, y: 300 }), new Platform(this, { x: 300, y: 200 })];
+    background = new Background(this);
+    platforms: Platform[] = [
+        new Platform(this, platformImg, { x: -110, y: 500 }),
+        new Platform(this, platformImg, { x: 389, y: 500 }),
+        new Platform(this, platformImg, { x: 888, y: 500 }),
+        new Platform(this, platformImg, { x: 300, y: 200 })];
     speed = 15;
     scrollOffset = 0;
 
     constructor() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.canvas.width = 1024;
+        this.canvas.height = 576;
     }
 
     update() {
-        this.ctx.fillStyle = '#4d79bc';
+        this.ctx.fillStyle = '#999';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.player.update();
 
         this.platforms.forEach(platform => {
             platform.update();
-
             if (this.checkTopCollistions(this.player, platform)) {
                 this.player.speedY = 0;
             }
@@ -37,6 +43,7 @@ export class Game {
                 this.player.speedX = 0;
                 this.scrollOffset += this.speed;
                 this.platforms.forEach(platform => platform.speedX = -this.speed);
+                this.background.update(this.speed);
             }
         } else if (this.control.keys.left.pressed) {
             this.player.setWalkLeftSkin();
@@ -47,6 +54,7 @@ export class Game {
                 if (this.scrollOffset > startBorder) {
                     this.scrollOffset -= this.speed;
                     this.platforms.forEach(platform => platform.speedX = this.speed);
+                    this.background.update(-this.speed);
                 } else {
                     this.scrollOffset = startBorder;
                     this.platforms.forEach(platform => platform.speedX = 0);
@@ -66,8 +74,9 @@ export class Game {
     }
 
     draw() {
-        this.player.draw();
+        this.background.draw();
         this.platforms.forEach(platform => platform.draw());
+        this.player.draw();
     }
 
     private checkCollistions(rect1: any, rect2: any): boolean {

@@ -3,11 +3,11 @@ import { Sprite } from './Sprite';
 
 export class Player extends Sprite {
     game: Game;
-    x = 100;
-    y = 100;
-    width = 0;
-    height = 400;
+    x = 0;
+    y = 0;
     image = <HTMLImageElement>document.getElementById('idleRight');
+    width = 0;
+    height = 200;
     frameX = 0;
     frameY = 0;
     speedX = 0;
@@ -22,10 +22,10 @@ export class Player extends Sprite {
     }
 
     update() {
-        this.updateSprite();
         this.x += this.speedX;
         this.y += this.speedY;
         this.onGravity();
+        this.updateSprite();
     }
 
     private onGravity() {
@@ -34,27 +34,27 @@ export class Player extends Sprite {
     }
 
     private turnRight() {
-        this.maxFrame = 59;
-        this.width = 177;
         this.image = <HTMLImageElement>document.getElementById('idleRight');
+        this.maxFrame = 59;
+        this.width = 88.5;
     }
 
     private turnLeft() {
-        this.maxFrame = 59;
-        this.width = 177;
         this.image = <HTMLImageElement>document.getElementById('idleLeft');
+        this.maxFrame = 59;
+        this.width = 88.5;
     }
 
     setWalkRightSkin() {
-        this.width = 341;
-        this.maxFrame = 29;
         this.image = <HTMLImageElement>document.getElementById('walkRight');
+        this.width = 170.5;
+        this.maxFrame = 29;
     }
 
     setWalkLeftSkin() {
-        this.width = 341;
-        this.maxFrame = 29;
         this.image = <HTMLImageElement>document.getElementById('walkLeft');
+        this.width = 170.5;
+        this.maxFrame = 29;
     }
 
     stop() {

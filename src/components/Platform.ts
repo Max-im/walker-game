@@ -4,14 +4,16 @@ export class Platform {
     game: Game;
     x: number;
     y: number;
-    width = 200;
-    height = 20;
+    width = 500;
+    height = 100;
     speedX = 0;
     speedY = 0;
-    image = <HTMLImageElement>document.getElementById('platform');
+    // image = <HTMLImageElement>document.getElementById('platform');
+    image: HTMLImageElement;
 
-    constructor(game: Game, coord: {x: number, y: number}) {
+    constructor(game: Game, image: HTMLImageElement, coord: {x: number, y: number}) {
         this.game = game;
+        this.image = image;
         this.x = coord.x;
         this.y = coord.y;
     }
