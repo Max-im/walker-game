@@ -14,8 +14,9 @@ export class Game {
         new Platform(this, platformImg, { x: -110, y: 500 }),
         new Platform(this, platformImg, { x: 389, y: 500 }),
         new Platform(this, platformImg, { x: 888, y: 500 }),
+        new Platform(this, platformImg, { x: 1800, y: 500 }),
         new Platform(this, platformImg, { x: 300, y: 200 })];
-    speed = 15;
+    speed = 10;
     scrollOffset = 0;
 
     constructor() {
@@ -38,7 +39,7 @@ export class Game {
         // player control
         if (this.control.keys.right.pressed) {
             this.player.setWalkRightSkin();
-            if (this.player.x < 400) this.player.speedX = this.speed;
+            if (this.player.x < 500) this.player.speedX = this.speed;
             else {
                 this.player.speedX = 0;
                 this.scrollOffset += this.speed;
@@ -60,11 +61,12 @@ export class Game {
                     this.platforms.forEach(platform => platform.speedX = 0);
                 }
             }
-        } else if (this.control.keys.up.pressed) {
-            this.player.jump();
         } else {
             this.player.stop();
             this.platforms.forEach(platform => platform.speedX = 0);
+        }
+        if (this.control.keys.up.pressed) {
+            this.player.jump();
         }
 
         const winnigOffset = 2000;

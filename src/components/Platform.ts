@@ -8,7 +8,6 @@ export class Platform {
     height = 100;
     speedX = 0;
     speedY = 0;
-    // image = <HTMLImageElement>document.getElementById('platform');
     image: HTMLImageElement;
 
     constructor(game: Game, image: HTMLImageElement, coord: {x: number, y: number}) {

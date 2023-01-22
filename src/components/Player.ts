@@ -63,6 +63,6 @@ export class Player extends Sprite {
     }
 
     jump() {
-        this.speedY -= 5;
+        if (this.speedY === 0) this.speedY = -22;
     }
 }

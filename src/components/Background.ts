@@ -10,7 +10,7 @@ export class Background {
 
         this.layers = [
             new Layer(game, <HTMLImageElement>document.getElementById('bg'), 0),
-            new Layer(game, <HTMLImageElement>document.getElementById('hills'), 0.2),
+            new Layer(game, <HTMLImageElement>document.getElementById('hills'), 0.5),
         ];
     }
 
