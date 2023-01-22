@@ -15,7 +15,8 @@ export class Game {
         new Platform(this, platformImg, { x: 389, y: 500 }),
         new Platform(this, platformImg, { x: 888, y: 500 }),
         new Platform(this, platformImg, { x: 1800, y: 500 }),
-        new Platform(this, platformImg, { x: 300, y: 200 })];
+        new Platform(this, platformImg, { x: 300, y: 200 })
+    ];
     speed = 10;
     scrollOffset = 0;
 
@@ -69,9 +70,15 @@ export class Game {
             this.player.jump();
         }
 
+        // win condition
         const winnigOffset = 2000;
         if (this.scrollOffset > winnigOffset) {
             console.log('you win');
+        }
+
+        // lose condition
+        if (this.player.y > this.canvas.height) {
+            this.reset();
         }
     }
 
@@ -79,6 +86,19 @@ export class Game {
         this.background.draw();
         this.platforms.forEach(platform => platform.draw());
         this.player.draw();
+    }
+
+    private reset() {
+        this.scrollOffset = 0;
+        this.player = new Player(this);
+        this.background = new Background(this);
+        this.platforms = [
+            new Platform(this, platformImg, { x: -110, y: 500 }),
+            new Platform(this, platformImg, { x: 389, y: 500 }),
+            new Platform(this, platformImg, { x: 888, y: 500 }),
+            new Platform(this, platformImg, { x: 1800, y: 500 }),
+            new Platform(this, platformImg, { x: 300, y: 200 })
+        ];
     }
 
     private checkCollistions(rect1: any, rect2: any): boolean {

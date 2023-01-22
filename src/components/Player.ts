@@ -30,7 +30,6 @@ export class Player extends Sprite {
 
     private onGravity() {
         if (this.y + this.height + this.speedY <= this.game.canvas.height) this.speedY += this.gravity;
-        else this.speedY = 0;
     }
 
     private turnRight() {
