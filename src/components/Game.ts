@@ -9,6 +9,7 @@ export class Game {
     control = new Control();
     platforms: Platform[] = [new Platform(this, { x: 200, y: 300 }), new Platform(this, { x: 300, y: 200 })];
     speed = 15;
+    scrollOffset = 0;
 
     constructor() {
         this.canvas.width = window.innerWidth;
@@ -34,6 +35,7 @@ export class Game {
             if (this.player.x < 400) this.player.speedX = this.speed;
             else {
                 this.player.speedX = 0;
+                this.scrollOffset += this.speed;
                 this.platforms.forEach(platform => platform.speedX = -this.speed);
             }
         } else if (this.control.keys.left.pressed) {
@@ -41,13 +43,25 @@ export class Game {
             if (this.player.x > 100) this.player.speedX = -this.speed;
             else {
                 this.player.speedX = 0;
-                this.platforms.forEach(platform => platform.speedX = this.speed);
+                const startBorder = -100;
+                if (this.scrollOffset > startBorder) {
+                    this.scrollOffset -= this.speed;
+                    this.platforms.forEach(platform => platform.speedX = this.speed);
+                } else {
+                    this.scrollOffset = startBorder;
+                    this.platforms.forEach(platform => platform.speedX = 0);
+                }
             }
         } else if (this.control.keys.up.pressed) {
             this.player.jump();
         } else {
             this.player.stop();
             this.platforms.forEach(platform => platform.speedX = 0);
+        }
+
+        const winnigOffset = 2000;
+        if (this.scrollOffset > winnigOffset) {
+            console.log('you win');
         }
     }
 
