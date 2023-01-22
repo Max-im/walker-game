@@ -8,6 +8,7 @@ export class Platform {
     height = 20;
     speedX = 0;
     speedY = 0;
+    image = <HTMLImageElement>document.getElementById('platform');
 
     constructor(game: Game, coord: {x: number, y: number}) {
         this.game = game;
@@ -21,7 +22,6 @@ export class Platform {
     }
 
     draw() {
-        this.game.ctx.fillStyle = 'blue';
-        this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
+        this.game.ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
