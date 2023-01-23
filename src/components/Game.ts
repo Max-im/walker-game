@@ -1,28 +1,28 @@
 import { Background } from './Background';
 import { Control } from './Control';
+import { ILevel } from './Levels/LevelType';
 import { Platform } from './Platform';
 import { Player } from './Player';
+import { levels } from './Levels';
 
-const platformImg = <HTMLImageElement>document.getElementById('platform');
 export class Game {
     canvas = <HTMLCanvasElement>document.getElementById('canvas');
     ctx = <CanvasRenderingContext2D> this.canvas.getContext('2d');
     player = new Player(this);
     control = new Control();
     background = new Background(this);
-    platforms: Platform[] = [
-        new Platform(this, platformImg, { x: -110, y: 500 }),
-        new Platform(this, platformImg, { x: 389, y: 500 }),
-        new Platform(this, platformImg, { x: 888, y: 500 }),
-        new Platform(this, platformImg, { x: 1800, y: 500 }),
-        new Platform(this, platformImg, { x: 300, y: 200 })
-    ];
+    platforms: Platform[] = [];
+    levelIndex = 1;
+    level: ILevel;
     speed = 10;
     scrollOffset = 0;
 
     constructor() {
         this.canvas.width = 1024;
         this.canvas.height = 576;
+        const Level = levels[this.levelIndex];
+        this.level = new Level(this);
+        this.platforms = this.level.platforms;
     }
 
     update() {
@@ -78,7 +78,7 @@ export class Game {
 
         // lose condition
         if (this.player.y > this.canvas.height) {
-            this.reset();
+            this.init();
         }
     }
 
@@ -88,17 +88,13 @@ export class Game {
         this.player.draw();
     }
 
-    private reset() {
+    private init() {
         this.scrollOffset = 0;
         this.player = new Player(this);
         this.background = new Background(this);
-        this.platforms = [
-            new Platform(this, platformImg, { x: -110, y: 500 }),
-            new Platform(this, platformImg, { x: 389, y: 500 }),
-            new Platform(this, platformImg, { x: 888, y: 500 }),
-            new Platform(this, platformImg, { x: 1800, y: 500 }),
-            new Platform(this, platformImg, { x: 300, y: 200 })
-        ];
+        const Level = levels[this.levelIndex];
+        this.level = new Level(this);
+        this.platforms = this.level.platforms;
     }
 
     private checkCollistions(rect1: any, rect2: any): boolean {
