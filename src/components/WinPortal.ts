@@ -28,7 +28,7 @@ export class WinPortal extends Sprite {
         else if (!this.touched) this.frameX = 0;
         else {
             this.frameX = this.maxFrame - 1;
-            setTimeout(() => this.opened = true, 1000);
+            setTimeout(() => this.opened = true, 500);
         }
     }
 
