@@ -12,6 +12,7 @@ export class WinPortal extends Sprite {
     opened = false;
     height = 224;
     width = 184;
+    speedX = 0;
 
     constructor(game: Game, coord: {x: number, y: number}) {
         super();
@@ -21,6 +22,7 @@ export class WinPortal extends Sprite {
     }
 
     update() {
+        this.x += this.speedX;
         if (this.opened && this.frameX < this.maxFrame - 1) this.frameX++;
         else if (!this.opened) this.frameX = 0;
         else this.frameX = this.maxFrame - 1;

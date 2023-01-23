@@ -1,10 +1,10 @@
 import { Background } from './Background';
 import { Control } from './Control';
-import { ILevel } from './Levels/LevelType';
-import { Platform } from './Platform';
 import { Player } from './Player';
 import { levels } from './Levels';
 import { UI } from './UI';
+import { Platform } from './Platform';
+import { Level } from './Levels/Level';
 
 export class Game {
     canvas = <HTMLCanvasElement>document.getElementById('canvas');
@@ -12,10 +12,9 @@ export class Game {
     player = new Player(this, 3);
     control = new Control();
     background = new Background(this);
-    platforms: Platform[] = [];
     ui = new UI(this);
     levelIndex = 0;
-    level: ILevel;
+    level: Level;
     speed = 10;
     scrollOffset = 0;
     gameOver = false;
@@ -25,7 +24,6 @@ export class Game {
         this.canvas.height = 576;
         const Level = levels[this.levelIndex];
         this.level = new Level(this);
-        this.platforms = this.level.platforms;
     }
 
     update() {
@@ -34,7 +32,7 @@ export class Game {
         this.player.update();
         this.level.update();
 
-        this.platforms.forEach(platform => {
+        this.level.platforms.forEach((platform: Platform) => {
             platform.update();
             if (this.platformCollistions(this.player, platform)) {
                 this.player.speedY = 0;
@@ -49,12 +47,14 @@ export class Game {
                 this.player.speedX = 0;
                 if (this.scrollOffset < this.level.endX) {
                     this.scrollOffset += this.speed;
-                    this.platforms.forEach(platform => platform.speedX = -this.speed);
                     this.background.update(this.speed);
+                    this.level.portal.speedX = -this.speed;
+                    this.level.platforms.forEach(platform => platform.speedX = -this.speed);
                 } else {
                     this.scrollOffset = this.level.endX;
                     this.player.speedX = this.speed;
-                    this.platforms.forEach(platform => platform.speedX = 0);
+                    this.level.portal.speedX = 0;
+                    this.level.platforms.forEach(platform => platform.speedX = 0);
                 }
             }
         } else if (this.control.keys.left.pressed) {
@@ -65,19 +65,27 @@ export class Game {
                 const startBorder = -100;
                 if (this.scrollOffset > startBorder) {
                     this.scrollOffset -= this.speed;
-                    this.platforms.forEach(platform => platform.speedX = this.speed);
+                    this.level.portal.speedX = this.speed;
+                    this.level.platforms.forEach(platform => platform.speedX = this.speed);
                     this.background.update(-this.speed);
                 } else {
                     this.scrollOffset = startBorder;
-                    this.platforms.forEach(platform => platform.speedX = 0);
+                    this.level.portal.speedX = 0;
+                    this.level.platforms.forEach(platform => platform.speedX = 0);
                 }
             }
         } else {
             this.player.stop();
-            this.platforms.forEach(platform => platform.speedX = 0);
+            this.level.platforms.forEach(platform => platform.speedX = 0);
+            this.level.portal.speedX = 0;
         }
         if (this.control.keys.up.pressed) {
             this.player.jump();
+        }
+
+        // winning
+        if (this.checkCollistions(this.level.portal, this.player)) {
+            this.level.portal.opened = true;
         }
 
         // win condition
@@ -96,10 +104,9 @@ export class Game {
 
     draw() {
         this.background.draw();
-        this.platforms.forEach(platform => platform.draw());
+        this.level.draw();
         this.player.draw();
         this.ui.draw();
-        this.level.draw();
     }
 
     private init() {
@@ -108,7 +115,6 @@ export class Game {
         this.background = new Background(this);
         const Level = levels[this.levelIndex];
         this.level = new Level(this);
-        this.platforms = this.level.platforms;
     }
 
     private checkCollistions(rect1: any, rect2: any): boolean {
