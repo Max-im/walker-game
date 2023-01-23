@@ -5,6 +5,7 @@ import { levels } from './Levels';
 import { UI } from './UI';
 import { Platform } from './Platform';
 import { Level } from './Levels/Level';
+import { Enemy } from './Enemies/Enemy';
 
 export class Game {
     canvas = <HTMLCanvasElement>document.getElementById('canvas');
@@ -38,10 +39,18 @@ export class Game {
             if (this.platformCollistions(this.player, platform)) {
                 this.player.speedY = 0;
             }
+            this.level.enemies.forEach(enemy => {
+                if (this.platformCollistions(enemy, platform)) {
+                    enemy.speedY = 0;
+                }
+            });
         });
 
         // player control
-        if (this.control.keys.right.pressed) {
+        if (this.control.keys.right.pressed && this.control.keys.left.pressed) {
+            this.player.stop();
+            this.stopMoving();
+        } else if (this.control.keys.right.pressed) {
             this.player.setWalkRightSkin();
             if (this.player.x < 500) this.player.speedX = this.speed;
             else {
@@ -51,11 +60,10 @@ export class Game {
                     this.background.update(this.speed);
                     this.level.portal.speedX = -this.speed;
                     this.level.platforms.forEach(platform => platform.speedX = -this.speed);
+                    this.level.enemies.forEach(enemy => enemy.speedX = -this.speed + enemy.speed);
                 } else {
                     this.scrollOffset = this.level.endX;
-                    this.player.speedX = this.speed;
-                    this.level.portal.speedX = 0;
-                    this.level.platforms.forEach(platform => platform.speedX = 0);
+                    this.stopMoving();
                 }
             }
         } else if (this.control.keys.left.pressed) {
@@ -68,21 +76,36 @@ export class Game {
                     this.scrollOffset -= this.speed;
                     this.level.portal.speedX = this.speed;
                     this.level.platforms.forEach(platform => platform.speedX = this.speed);
+                    this.level.enemies.forEach(enemy => enemy.speedX = this.speed - enemy.speed);
                     this.background.update(-this.speed);
                 } else {
                     this.scrollOffset = startBorder;
-                    this.level.portal.speedX = 0;
-                    this.level.platforms.forEach(platform => platform.speedX = 0);
+                    this.stopMoving();
                 }
             }
         } else {
             this.player.stop();
-            this.level.platforms.forEach(platform => platform.speedX = 0);
-            this.level.portal.speedX = 0;
+            this.stopMoving();
         }
+
         if (this.control.keys.up.pressed) {
             this.player.jump();
         }
+
+        // enemy touch
+        this.level.enemies.forEach(enemy => {
+            if (enemy.markDeleted) return;
+            if (this.checkCollistions(enemy, this.player)) {
+                if (this.enemyKillCollistions(this.player, enemy)) {
+                    enemy.kill();
+                } else {
+                    this.player.lives--;
+                    if (this.player.lives > 0) this.init();
+                    else this.gameOver = true;
+                }
+            }
+
+        });
 
         // winning
         if (this.checkCollistions(this.level.portal, this.player)) {
@@ -119,6 +142,12 @@ export class Game {
         this.level = new Level(this);
     }
 
+    private stopMoving() {
+        this.level.platforms.forEach(platform => platform.speedX = 0);
+        this.level.enemies.forEach(enemy => enemy.speedX = 0);
+        this.level.portal.speedX = 0;
+    }
+
     private checkCollistions(rect1: any, rect2: any): boolean {
         return (
             rect1.x < rect2.x + rect2.width &&
@@ -128,12 +157,21 @@ export class Game {
         );
     }
 
-    private platformCollistions(topRrect: any, bottomRect: any): boolean {
+    private platformCollistions(topRrect: any, platform: Platform): boolean {
         return (
-            topRrect.y + topRrect.height <= bottomRect.y &&
-            topRrect.y + topRrect.height + topRrect.speedY >= bottomRect.y &&
-            topRrect.x + topRrect.width >= bottomRect.x &&
-            topRrect.x <= bottomRect.x + bottomRect.width
+            topRrect.y + topRrect.height <= platform.y &&
+            topRrect.y + topRrect.height + topRrect.speedY >= platform.y &&
+            topRrect.x + topRrect.width >= platform.x &&
+            topRrect.x <= platform.x + platform.width
+        );
+    }
+
+    private enemyKillCollistions(player: Player, enemy: Enemy): boolean {
+        return (
+            player.y + player.height - 5 <= enemy.y &&
+            player.y + player.height + player.speedY >= enemy.y &&
+            player.x + player.width >= enemy.x &&
+            player.x <= enemy.x + enemy.width
         );
     }
 }

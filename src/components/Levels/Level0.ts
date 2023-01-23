@@ -1,3 +1,5 @@
+import { Enemy } from '../Enemies/Enemy';
+import { Worm } from '../Enemies/Worm';
 import { Game } from '../Game';
 import { Platform } from '../Platform';
 import { Portal } from '../Portal';
@@ -8,6 +10,7 @@ const platformImg = <HTMLImageElement>document.getElementById('platform');
 export class Level0 extends Level {
     game: Game;
     platforms: Platform[] = [];
+    enemies: Enemy[] = [];
     endX = 5900;
     portal: Portal;
     message = 'Level 1';
@@ -31,6 +34,9 @@ export class Level0 extends Level {
             new Platform(this.game, platformImg, { x: 6000 - 2, y: 500 }),
             new Platform(this.game, platformImg, { x: 6500 - 3, y: 500 }),
         ];
-    }
 
+        this.enemies = [
+            new Worm(this.game, { x: 400, y: 200 })
+        ];
+    }
 }
