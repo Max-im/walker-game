@@ -1,7 +1,7 @@
 import { Game } from './Game';
 import { Sprite } from './Sprite';
 
-export class WinPortal extends Sprite {
+export class Portal extends Sprite {
     image = <HTMLImageElement>document.getElementById('door');
     frameX = 0;
     frameY = 0;

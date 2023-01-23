@@ -1,6 +1,6 @@
 import { Game } from '../Game';
 import { Platform } from '../Platform';
-import { WinPortal } from '../WinPortal';
+import { Portal } from '../Portal';
 import { Level } from './Level';
 
 const platformImg = <HTMLImageElement>document.getElementById('platform');
@@ -9,12 +9,13 @@ export class Level0 extends Level {
     game: Game;
     platforms: Platform[] = [];
     endX = 5900;
-    portal: WinPortal;
+    portal: Portal;
+    message = 'Level 1';
 
     constructor(game: Game) {
         super();
         this.game = game;
-        this.portal = new WinPortal(this.game, { x: 5500, y: 276 });
+        this.portal = new Portal(this.game, { x: 5500, y: 276 });
 
         this.platforms = [
             new Platform(this.game, platformImg, { x: 300, y: 200 }),

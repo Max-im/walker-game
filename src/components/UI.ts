@@ -17,13 +17,11 @@ export class UI {
         ctx.textAlign = 'center';
         ctx.fillStyle = 'white';
         ctx.font = '58px Tahoma';
+        const width = this.game.canvas.width / 2;
+        const height = this.game.canvas.height / 2;
 
-        if (this.game.gameOver) {
-            this.game.ctx.fillText('Game Over', this.game.canvas.width / 2, this.game.canvas.height / 2);
-        }
-
-        if (this.game.win) {
-            this.game.ctx.fillText('You Win', this.game.canvas.width / 2, this.game.canvas.height / 2);
-        }
+        if (this.game.gameOver) this.game.ctx.fillText('Game Over', width, height);
+        if (this.game.win) this.game.ctx.fillText('You Win', width, height);
+        if (this.game.level.message) this.game.ctx.fillText(this.game.level.message, width, height);
     }
 }
