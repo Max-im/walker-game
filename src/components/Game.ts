@@ -6,6 +6,7 @@ import { UI } from './UI';
 import { Platform } from './Platform';
 import { Level } from './Levels/Level';
 import { Enemy } from './Enemies/Enemy';
+import { Boom } from './Boom';
 
 export class Game {
     canvas = <HTMLCanvasElement>document.getElementById('canvas');
@@ -98,6 +99,8 @@ export class Game {
             if (this.checkCollistions(enemy, this.player)) {
                 if (this.enemyKillCollistions(this.player, enemy)) {
                     enemy.kill();
+                    this.level.booms.push(new Boom(this, { x: enemy.x, y: enemy.y + enemy.height / 2 }));
+                    this.player.speedY = -5;
                 } else {
                     this.player.lives--;
                     if (this.player.lives > 0) this.init();
@@ -168,7 +171,7 @@ export class Game {
 
     private enemyKillCollistions(player: Player, enemy: Enemy): boolean {
         return (
-            player.y + player.height - 5 <= enemy.y &&
+            player.y + player.height - 10 <= enemy.y &&
             player.y + player.height + player.speedY >= enemy.y &&
             player.x + player.width >= enemy.x &&
             player.x <= enemy.x + enemy.width

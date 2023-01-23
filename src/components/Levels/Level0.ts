@@ -1,3 +1,4 @@
+import { Boom } from '../Boom';
 import { Enemy } from '../Enemies/Enemy';
 import { Worm } from '../Enemies/Worm';
 import { Game } from '../Game';
@@ -11,6 +12,7 @@ export class Level0 extends Level {
     game: Game;
     platforms: Platform[] = [];
     enemies: Enemy[] = [];
+    booms: Boom[] = [];
     endX = 5900;
     portal: Portal;
     message = 'Level 1';
