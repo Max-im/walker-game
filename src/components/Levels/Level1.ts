@@ -14,6 +14,7 @@ export class Level1 extends Level {
     constructor(game: Game) {
         super();
         this.game = game;
+        this.portal = new WinPortal(this.game, { x: 600, y: 276 });
 
         this.platforms = [
             new Platform(this.game, platformImg, { x: 2500, y: 200 }),

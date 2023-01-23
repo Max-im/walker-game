@@ -18,6 +18,7 @@ export class Game {
     speed = 10;
     scrollOffset = 0;
     gameOver = false;
+    win = false;
 
     constructor() {
         this.canvas.width = 1024;
@@ -85,14 +86,15 @@ export class Game {
 
         // winning
         if (this.checkCollistions(this.level.portal, this.player)) {
-            this.level.portal.opened = true;
+            this.level.portal.touched = true;
         }
 
-        // win condition
-        // const winnigOffset = 2000;
-        // if (this.scrollOffset > winnigOffset) {
-        //     console.log('you win');
-        // }
+        if (this.level.portal.opened) {
+            if (levels[this.levelIndex + 1]) {
+                this.levelIndex++;
+                this.init();
+            } else this.win = true;
+        }
 
         // lose condition
         if (this.player.y > this.canvas.height) {

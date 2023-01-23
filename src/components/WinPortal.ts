@@ -10,6 +10,7 @@ export class WinPortal extends Sprite {
     y: number;
     game: Game;
     opened = false;
+    touched = false;
     height = 224;
     width = 184;
     speedX = 0;
@@ -23,9 +24,12 @@ export class WinPortal extends Sprite {
 
     update() {
         this.x += this.speedX;
-        if (this.opened && this.frameX < this.maxFrame - 1) this.frameX++;
-        else if (!this.opened) this.frameX = 0;
-        else this.frameX = this.maxFrame - 1;
+        if (this.touched && this.frameX < this.maxFrame - 1) this.frameX++;
+        else if (!this.touched) this.frameX = 0;
+        else {
+            this.frameX = this.maxFrame - 1;
+            setTimeout(() => this.opened = true, 1000);
+        }
     }
 
 }
