@@ -5,4 +5,6 @@ export interface ILevel {
     game: Game;
     platforms: Platform[];
     endX: number;
+    draw: () => void;
+    update: () => void;
 }

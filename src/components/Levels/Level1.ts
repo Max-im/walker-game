@@ -7,7 +7,7 @@ const platformImg = <HTMLImageElement>document.getElementById('platform');
 export class Level1 implements ILevel {
     game: Game;
     platforms: Platform[] = [];
-    endX = 7000;
+    endX = 5900;
 
     constructor(game: Game) {
         this.game = game;
@@ -27,5 +27,13 @@ export class Level1 implements ILevel {
             new Platform(this.game, platformImg, { x: 6000 - 2, y: 500 }),
             new Platform(this.game, platformImg, { x: 6500 - 3, y: 500 }),
         ];
+    }
+    
+    draw() {
+
+    }
+
+    update() {
+        // this.portal.update();
     }
 }

@@ -14,11 +14,13 @@ export class Player extends Sprite {
     speedY = 0;
     gravity = 0.8;
     maxFrame = 0;
+    lives: number;
 
-    constructor(game: Game) {
+    constructor(game: Game, lives: number) {
         super();
         this.game = game;
         this.turnRight();
+        this.lives = lives;
     }
 
     update() {

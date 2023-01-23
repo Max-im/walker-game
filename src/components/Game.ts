@@ -4,18 +4,21 @@ import { ILevel } from './Levels/LevelType';
 import { Platform } from './Platform';
 import { Player } from './Player';
 import { levels } from './Levels';
+import { UI } from './UI';
 
 export class Game {
     canvas = <HTMLCanvasElement>document.getElementById('canvas');
     ctx = <CanvasRenderingContext2D> this.canvas.getContext('2d');
-    player = new Player(this);
+    player = new Player(this, 3);
     control = new Control();
     background = new Background(this);
     platforms: Platform[] = [];
-    levelIndex = 1;
+    ui = new UI(this);
+    levelIndex = 0;
     level: ILevel;
     speed = 10;
     scrollOffset = 0;
+    gameOver = false;
 
     constructor() {
         this.canvas.width = 1024;
@@ -29,10 +32,11 @@ export class Game {
         this.ctx.fillStyle = '#999';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.player.update();
+        this.level.update();
 
         this.platforms.forEach(platform => {
             platform.update();
-            if (this.checkTopCollistions(this.player, platform)) {
+            if (this.platformCollistions(this.player, platform)) {
                 this.player.speedY = 0;
             }
         });
@@ -43,9 +47,15 @@ export class Game {
             if (this.player.x < 500) this.player.speedX = this.speed;
             else {
                 this.player.speedX = 0;
-                this.scrollOffset += this.speed;
-                this.platforms.forEach(platform => platform.speedX = -this.speed);
-                this.background.update(this.speed);
+                if (this.scrollOffset < this.level.endX) {
+                    this.scrollOffset += this.speed;
+                    this.platforms.forEach(platform => platform.speedX = -this.speed);
+                    this.background.update(this.speed);
+                } else {
+                    this.scrollOffset = this.level.endX;
+                    this.player.speedX = this.speed;
+                    this.platforms.forEach(platform => platform.speedX = 0);
+                }
             }
         } else if (this.control.keys.left.pressed) {
             this.player.setWalkLeftSkin();
@@ -71,14 +81,16 @@ export class Game {
         }
 
         // win condition
-        const winnigOffset = 2000;
-        if (this.scrollOffset > winnigOffset) {
-            console.log('you win');
-        }
+        // const winnigOffset = 2000;
+        // if (this.scrollOffset > winnigOffset) {
+        //     console.log('you win');
+        // }
 
         // lose condition
         if (this.player.y > this.canvas.height) {
-            this.init();
+            this.player.lives--;
+            if (this.player.lives > 0) this.init();
+            else this.gameOver = true;
         }
     }
 
@@ -86,11 +98,13 @@ export class Game {
         this.background.draw();
         this.platforms.forEach(platform => platform.draw());
         this.player.draw();
+        this.ui.draw();
+        this.level.draw();
     }
 
     private init() {
         this.scrollOffset = 0;
-        this.player = new Player(this);
+        this.player = new Player(this, this.player.lives);
         this.background = new Background(this);
         const Level = levels[this.levelIndex];
         this.level = new Level(this);
@@ -106,7 +120,7 @@ export class Game {
         );
     }
 
-    private checkTopCollistions(topRrect: any, bottomRect: any): boolean {
+    private platformCollistions(topRrect: any, bottomRect: any): boolean {
         return (
             topRrect.y + topRrect.height <= bottomRect.y &&
             topRrect.y + topRrect.height + topRrect.speedY >= bottomRect.y &&

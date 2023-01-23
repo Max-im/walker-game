@@ -1,5 +1,6 @@
 import { Game } from '../Game';
 import { Platform } from '../Platform';
+import { WinPortal } from '../WinPortal';
 import { ILevel } from './LevelType';
 
 const platformImg = <HTMLImageElement>document.getElementById('platform');
@@ -7,10 +8,12 @@ const platformImg = <HTMLImageElement>document.getElementById('platform');
 export class Level0 implements ILevel {
     game: Game;
     platforms: Platform[] = [];
-    endX = 7000;
+    endX = 5900;
+    portal: WinPortal;
 
     constructor(game: Game) {
         this.game = game;
+        this.portal = new WinPortal(this.game, { x: 600, y: 276 });
 
         this.platforms = [
             new Platform(this.game, platformImg, { x: 300, y: 200 }),
@@ -26,5 +29,13 @@ export class Level0 implements ILevel {
             new Platform(this.game, platformImg, { x: 6000 - 2, y: 500 }),
             new Platform(this.game, platformImg, { x: 6500 - 3, y: 500 }),
         ];
+    }
+
+    draw() {
+        this.portal.draw();
+    }
+
+    update() {
+        this.portal.update();
     }
 }
