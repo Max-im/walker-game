@@ -100,14 +100,11 @@ export class Game {
                 if (this.enemyKillCollistions(this.player, enemy)) {
                     enemy.kill();
                     this.level.booms.push(new Boom(this, { x: enemy.x, y: enemy.y + enemy.height / 2 }));
-                    this.player.speedY = -5;
+                    this.player.speedY = -10;
                 } else {
-                    this.player.lives--;
-                    if (this.player.lives > 0) this.init();
-                    else this.gameOver = true;
+                    this.loose();
                 }
             }
-
         });
 
         // winning
@@ -124,9 +121,7 @@ export class Game {
 
         // lose condition
         if (this.player.y > this.canvas.height) {
-            this.player.lives--;
-            if (this.player.lives > 0) this.init();
-            else this.gameOver = true;
+            this.loose();
         }
     }
 
@@ -135,6 +130,12 @@ export class Game {
         this.level.draw();
         this.player.draw();
         this.ui.draw();
+    }
+
+    private loose() {
+        this.player.lives--;
+        if (this.player.lives > 0) this.init();
+        else this.gameOver = true;
     }
 
     private init() {

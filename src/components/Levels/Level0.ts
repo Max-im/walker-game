@@ -38,7 +38,9 @@ export class Level0 extends Level {
         ];
 
         this.enemies = [
-            new Worm(this.game, { x: 400, y: 200 })
+            new Worm(this.game, { x: 400, y: 300 }),
+            new Worm(this.game, { x: 500, y: 300 }),
+            new Worm(this.game, { x: 600, y: 300 }),
         ];
     }
 }

@@ -6,8 +6,8 @@ export class Worm extends Enemy {
     x: number;
     y: number;
     image = <HTMLImageElement>document.getElementById('worm');
-    width = 229;
-    height = 171;
+    width = 114.5;
+    height = 85.5;
     frameX = 0;
     frameY = 0;
     speedX = 0;
