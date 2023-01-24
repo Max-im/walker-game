@@ -1,6 +1,7 @@
 import { Boom } from '../Boom';
 import { Enemy } from '../Enemies/Enemy';
 import { Ghost } from '../Enemies/Ghost';
+import { Spider } from '../Enemies/Spider';
 import { Worm } from '../Enemies/Worm';
 import { Game } from '../Game';
 import { Platform } from '../Platform';
@@ -18,6 +19,9 @@ export class Level1 extends Level {
     endX = 5900;
     message = 'Level 2';
     enemiesToAdd = {
+        800: [
+            new Spider(this.game, { x: 1200, y: 100 }),
+        ],
         1200: [
             new Worm(this.game, { x: 1200, y: 300 }),
             new Worm(this.game, { x: 1300, y: 300 }),
@@ -37,12 +41,15 @@ export class Level1 extends Level {
         4500: [
             new Worm(this.game, { x: 900, y: 0 }),
             new Ghost(this.game, { x: 2000, y: 50 }),
+            new Spider(this.game, { x: 800, y: 100 }),
         ],
         5000: [
             new Worm(this.game, { x: 900, y: 0 }),
             new Worm(this.game, { x: 1100, y: 0 }),
             new Worm(this.game, { x: 1200, y: 0 }),
             new Ghost(this.game, { x: 2000, y: 150 }),
+            new Spider(this.game, { x: 1200, y: 100 }),
+            new Spider(this.game, { x: 1400, y: 100 }),
         ],
     };
 

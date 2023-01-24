@@ -17,20 +17,32 @@ export abstract class Enemy extends Sprite {
     speedY = 0;
     speedX = 0;
     markDeleted = false;
+    enemyTimer = 0;
+    enemyInterval = 2000;
 
     constructor(game: Game) {
         super();
         this.game = game;
     }
 
-    update() {
+    update(deltaTime: number) {
         this.x += this.speedX - this.speed;
         this.y += this.speedY;
         if (this.y + this.height + this.speedY <= this.game.canvas.height) this.speedY += this.gravity;
         this.updateSprite();
+
+        if (this.enemyTimer > this.enemyInterval) {
+            this.attack();
+            this.enemyTimer = 0;
+        } else {
+            this.enemyTimer += deltaTime;
+        }
     }
 
     kill() {
         this.markDeleted = true;
     }
+
+    // eslint-disable-next-line
+    protected attack() {}
 }

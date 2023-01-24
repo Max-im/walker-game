@@ -15,7 +15,7 @@ export class Game {
     control = new Control();
     background = new Background(this);
     ui = new UI(this);
-    levelIndex = 1;
+    levelIndex = 0;
     level: Level;
     speed = 10;
     scrollOffset = 0;
@@ -29,11 +29,11 @@ export class Game {
         this.level = new Level(this);
     }
 
-    update() {
+    update(deltaTime: number) {
         this.ctx.fillStyle = '#999';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.player.update();
-        this.level.update();
+        this.level.update(deltaTime);
 
         this.level.platforms.forEach((platform: Platform) => {
             platform.update();
@@ -47,6 +47,10 @@ export class Game {
             });
         });
 
+        if (this.gameOver || this.win) {
+            this.stopMoving();
+            return;
+        }
         // player control
         if (this.control.keys.right.pressed && this.control.keys.left.pressed) {
             this.player.stop();
@@ -106,8 +110,6 @@ export class Game {
                 }
             }
         });
-
-        console.log(this.scrollOffset)
 
         // winning
         if (this.checkCollistions(this.level.portal, this.player)) {

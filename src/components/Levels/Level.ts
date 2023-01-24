@@ -21,19 +21,20 @@ export abstract class Level {
 
     draw() {
         this.platforms.forEach(platform => platform.draw());
+        this.portal.draw();
         this.enemies.forEach(enemy => enemy.draw());
         this.booms.forEach(boom => boom.draw());
-        this.portal.draw();
     }
 
-    update() {
+    update(deltaTime: number) {
         this.portal.update();
-        this.enemies.forEach(enemy => enemy.update());
+        this.enemies.forEach(enemy => enemy.update(deltaTime));
         this.booms.forEach(boom => boom.update());
 
         this.enemies = this.enemies.filter(enemy => {
             if (enemy.markDeleted) return false;
             if (enemy.y > this.game.canvas.height) return false;
+            if (enemy.x + 500 < 0) return false;
             return true;
         });
         this.booms = this.booms.filter(boom => !boom.markDeleted);
