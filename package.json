@@ -2,7 +2,6 @@
   "name": "walker-game",
   "version": "1.0.0",
   "description": "Canvas Walker Game",
-  "main": "index.js",
   "scripts": {
     "dev": "npx parcel ./src/index.html",
     "build": "npx parcel build ./src/index.html",
