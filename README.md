@@ -14,3 +14,4 @@
 - open `http://localhost:1234`
 
 ### Description:
+Reach the save portal through the space crowded with ugly enemies
