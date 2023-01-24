@@ -1,5 +1,6 @@
 import { Boom } from '../Boom';
 import { Enemy } from '../Enemies/Enemy';
+import { Ghost } from '../Enemies/Ghost';
 import { Worm } from '../Enemies/Worm';
 import { Game } from '../Game';
 import { Platform } from '../Platform';
@@ -22,20 +23,26 @@ export class Level1 extends Level {
             new Worm(this.game, { x: 1300, y: 300 }),
             new Worm(this.game, { x: 1400, y: 300 }),
         ],
+        1400: [
+            new Ghost(this.game, { x: 2000, y: 100 }),
+        ],
         1600: [
             new Worm(this.game, { x: 1600, y: 100 }),
         ],
         3300: [
+            new Ghost(this.game, { x: 1600, y: 100 }),
             new Worm(this.game, { x: 900, y: 0 }),
             new Worm(this.game, { x: 1100, y: 0 }),
         ],
         4500: [
             new Worm(this.game, { x: 900, y: 0 }),
+            new Ghost(this.game, { x: 2000, y: 50 }),
         ],
         5000: [
             new Worm(this.game, { x: 900, y: 0 }),
             new Worm(this.game, { x: 1100, y: 0 }),
             new Worm(this.game, { x: 1200, y: 0 }),
+            new Ghost(this.game, { x: 2000, y: 150 }),
         ],
     };
 
@@ -62,8 +69,8 @@ export class Level1 extends Level {
 
         this.enemies = [
             new Worm(this.game, { x: 400, y: 300 }),
-            new Worm(this.game, { x: 550, y: 300 }),
-            new Worm(this.game, { x: 700, y: 300 }),
+            new Worm(this.game, { x: 500, y: 300 }),
+            new Worm(this.game, { x: 600, y: 300 }),
         ];
     }
 }

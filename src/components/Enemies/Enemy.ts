@@ -11,11 +11,11 @@ export abstract class Enemy extends Sprite {
     abstract maxFrame: number;
     abstract lives: number;
     abstract speed: number;
+    gravity = 0.8;
     frameX = 0;
     frameY = 0;
     speedY = 0;
     speedX = 0;
-    gravity = 0.8;
     markDeleted = false;
 
     constructor(game: Game) {
