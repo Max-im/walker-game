@@ -15,7 +15,7 @@ export class Game {
     control = new Control();
     background = new Background(this);
     ui = new UI(this);
-    levelIndex = 0;
+    levelIndex = 1;
     level: Level;
     speed = 10;
     scrollOffset = 0;
@@ -106,6 +106,8 @@ export class Game {
                 }
             }
         });
+
+        console.log(this.scrollOffset)
 
         // winning
         if (this.checkCollistions(this.level.portal, this.player)) {

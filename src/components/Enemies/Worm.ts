@@ -17,7 +17,7 @@ export class Worm extends Enemy {
     speed = 1;
 
     constructor(game: Game, coord: {x: number, y: number}) {
-        super();
+        super(game);
         this.game = game;
         this.x = coord.x;
         this.y = coord.y;

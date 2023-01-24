@@ -16,9 +16,27 @@ export class Level0 extends Level {
     endX = 5900;
     portal: Portal;
     message = 'Level 1';
+    enemiesToAdd = {
+        1200: [
+            new Worm(this.game, { x: 1000, y: 300 }),
+            new Worm(this.game, { x: 1200, y: 300 }),
+            new Worm(this.game, { x: 1350, y: 300 }),
+            new Worm(this.game, { x: 1500, y: 300 }),
+        ],
+        1600: [
+            new Worm(this.game, { x: 1600, y: 100 }),
+        ],
+        3300: [
+            new Worm(this.game, { x: 900, y: 0 }),
+            new Worm(this.game, { x: 1100, y: 0 }),
+        ],
+        4500: [
+            new Worm(this.game, { x: 900, y: 0 }),
+        ],
+    };
 
     constructor(game: Game) {
-        super();
+        super(game);
         this.game = game;
         this.portal = new Portal(this.game, { x: 5500, y: 276 });
 
@@ -39,8 +57,8 @@ export class Level0 extends Level {
 
         this.enemies = [
             new Worm(this.game, { x: 400, y: 300 }),
-            new Worm(this.game, { x: 500, y: 300 }),
-            new Worm(this.game, { x: 600, y: 300 }),
+            new Worm(this.game, { x: 550, y: 300 }),
+            new Worm(this.game, { x: 700, y: 300 }),
         ];
     }
 }

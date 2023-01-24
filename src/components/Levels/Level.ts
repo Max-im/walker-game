@@ -5,15 +5,17 @@ import { Platform } from '../Platform';
 import { Portal } from '../Portal';
 
 export abstract class Level {
+    game: Game;
     abstract platforms: Platform[];
     abstract portal: Portal;
-    abstract game: Game;
     abstract endX: number;
     abstract message: null | string;
     abstract enemies: Enemy[];
     abstract booms: Boom[];
+    abstract enemiesToAdd: {[key: string]: Enemy[]};
 
-    constructor() {
+    constructor(game: Game) {
+        this.game = game;
         setTimeout(() => this.message = null, 1000);
     }
 
@@ -29,7 +31,19 @@ export abstract class Level {
         this.enemies.forEach(enemy => enemy.update());
         this.booms.forEach(boom => boom.update());
 
-        this.enemies = this.enemies.filter(enemy => !enemy.markDeleted);
+        this.enemies = this.enemies.filter(enemy => {
+            if (enemy.markDeleted) return false;
+            if (enemy.y > this.game.canvas.height) return false;
+            return true;
+        });
         this.booms = this.booms.filter(boom => !boom.markDeleted);
+
+        for (const offset in this.enemiesToAdd) {
+            const enemiesList = this.enemiesToAdd[offset];
+            if (this.game.scrollOffset > Number(offset) && enemiesList && enemiesList.length) {
+                this.enemies.push(...enemiesList);
+                delete this.enemiesToAdd[offset];
+            }
+        }
     }
 }

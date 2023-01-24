@@ -1,6 +1,8 @@
+import { Game } from '../Game';
 import { Sprite } from '../Sprite';
 
 export abstract class Enemy extends Sprite {
+    game: Game;
     abstract x: number;
     abstract y: number;
     abstract image: HTMLImageElement;
@@ -16,8 +18,9 @@ export abstract class Enemy extends Sprite {
     gravity = 0.8;
     markDeleted = false;
 
-    constructor() {
+    constructor(game: Game) {
         super();
+        this.game = game;
     }
 
     update() {
