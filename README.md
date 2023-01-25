@@ -6,6 +6,9 @@
 - TypeScript
 - Canvas
 
+### Play now:
+[Play](https://max-im.github.io/walker-game)
+
 ### Running:
 - clone the repo
 - go to the project dir `cd walker-game`
